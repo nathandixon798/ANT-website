@@ -84,7 +84,7 @@
        Leave a link as "" and its button shows "Coming soon" instead.
     ------------------------------------------------------------------- */
     const LINKS = {
-      newToFaithGuide: "",
+      newToFaithGuide: "new-to-faith-guide.pdf",
       creativeWorkshops: "",
       directions: "https://www.google.com/maps/search/?api=1&query=Lumiere+London+6-14+Underwood+St+London+N1+7JQ",
       readTheBible: "https://www.bible.com/en-GB/reading-plans/52093-new-to-jesus",
@@ -106,6 +106,7 @@
         tint: "group-hover:bg-brand-light",
         icon: "cross",
         featured: true,
+        cta: "Read the guide",
         span: "sm:col-span-2",
       },
       {
@@ -196,7 +197,8 @@
     ];
 
     const isExternal = (href) => /^https?:\/\//.test(href);
-    const linkProps = (href) => (isExternal(href) ? { href, target: "_blank", rel: "noopener noreferrer" } : { href });
+    // External links and PDFs open in a new tab.
+    const linkProps = (href) => (isExternal(href) || /\.pdf$/i.test(href) ? { href, target: "_blank", rel: "noopener noreferrer" } : { href });
 
     /* ---------------------------- Icons ---------------------------- */
     function Icon({ name, className = "w-6 h-6" }) {
@@ -486,7 +488,7 @@
                 <p className="mt-2 text-ink/65 leading-relaxed flex-1">{r.blurb}</p>
                 {isLink ? (
                   <span className="mt-6 inline-flex items-center gap-2 font-bold">
-                    Open
+                    {r.cta || "Open"}
                     <span className="grid place-items-center w-8 h-8 rounded-full bg-ink text-white transition-all duration-300 group-hover:translate-x-1.5 group-hover:bg-brand">
                       <Icon name="arrow" className="w-4 h-4" />
                     </span>
@@ -500,7 +502,7 @@
             )}
 
             {r.featured && (
-              <span className="absolute -top-3.5 right-6 rotate-[4deg] rounded-full bg-sun border-2 border-ink px-3 py-1 text-xs font-extrabold uppercase tracking-wide">
+              <span className="absolute -top-3.5 right-6 rotate-[4deg] rounded-full bg-[#FF4FA3] text-white border-2 border-ink px-3 py-1 text-xs font-extrabold uppercase tracking-wide">
                 Start here ✨
               </span>
             )}
