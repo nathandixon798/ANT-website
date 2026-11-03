@@ -152,8 +152,8 @@
         blurb: "Questions about faith, church or life? No question is too big or too small. Just ask.",
         tag: "Chat with us",
         href: LINKS.askAQuestion,
-        color: "bg-ink",
-        tint: "group-hover:bg-[#ECE9F3]",
+        color: "bg-[#6C5CE7]",
+        tint: "group-hover:bg-[#EEEBFD]",
         icon: "chat",
         iconClass: "text-sun",
       },
@@ -236,7 +236,7 @@
       return (
         <a
           {...linkProps(href)}
-          className={`group inline-flex items-center justify-center gap-3 rounded-full bg-ink text-white font-display font-bold text-lg pl-7 pr-2 py-2 border-2 border-ink shadow-pop transition-all duration-200 hover:-translate-y-0.5 hover:-translate-x-0.5 hover:shadow-pop-lg active:translate-x-1 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-sun ${className}`}
+          className={`group inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-brand to-coral text-white font-display font-bold text-lg pl-7 pr-2 py-2 border-2 border-ink shadow-pop transition-all duration-200 hover:-translate-y-0.5 hover:-translate-x-0.5 hover:shadow-pop-lg active:translate-x-1 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-sun ${className}`}
         >
           {children}
           <span className="grid place-items-center w-11 h-11 rounded-full bg-sun text-ink transition-transform duration-300 group-hover:rotate-[-45deg]">
@@ -545,7 +545,7 @@
                 Jesus knows you, loves you and has made a way home. Come along on Sunday, start the Bible plan, or just say hello. We'd love to walk this road with you.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <PrimaryButton href={MAIN_CTA.href} className="!bg-white !text-ink">{MAIN_CTA.label}</PrimaryButton>
+                <PrimaryButton href={MAIN_CTA.href} className="!bg-none !bg-white !text-ink">{MAIN_CTA.label}</PrimaryButton>
                 <ShareButton />
               </div>
             </div>
