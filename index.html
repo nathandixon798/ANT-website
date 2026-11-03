@@ -85,6 +85,7 @@
     ------------------------------------------------------------------- */
     const LINKS = {
       newToFaithGuide: "",
+      creativeWorkshops: "",
       directions: "https://www.google.com/maps/search/?api=1&query=Lumiere+London+6-14+Underwood+St+London+N1+7JQ",
       readTheBible: "https://www.bible.com/en-GB/reading-plans/52093-new-to-jesus",
       prayerRequest: "https://forms.gle/7i9zAgLYhp4NKENv9",
@@ -93,6 +94,7 @@
       youtube: "https://www.youtube.com/@ANewThingLondon",
       instagram: "https://www.instagram.com/anewthingldn",
       tiktok: "https://www.tiktok.com/@anewthingldn",
+      spotify: "https://open.spotify.com/playlist/1L2Im4pGxVeA9vXKGlq3ol?si=3e65b9d49660439e",
     };
 
     const RESOURCES = [
@@ -104,6 +106,7 @@
         tint: "group-hover:bg-brand-light",
         icon: "cross",
         featured: true,
+        span: "sm:col-span-2",
       },
       {
         title: "Join Us on Sunday",
@@ -157,12 +160,39 @@
         icon: "chat",
         iconClass: "text-sun",
       },
+      {
+        title: "Listen to Our Playlist",
+        blurb: "The worship songs we love singing together on a Sunday — perfect for the commute, the gym or quiet time with God.",
+        tag: "Worship playlist",
+        href: LINKS.spotify,
+        color: "bg-[#1DB954]",
+        tint: "group-hover:bg-[#E3F8EA]",
+        icon: "spotify",
+        iconClass: "text-ink",
+        span: "lg:col-span-2",
+      },
+      {
+        title: "Upcoming Creative Workshops",
+        blurb: "Pick up new creative skills, meet new friends and make something together. Workshops for our local community are on the way.",
+        tag: "Open to everyone",
+        href: LINKS.creativeWorkshops,
+        color: "bg-gradient-to-br from-sun via-coral to-brand",
+        icon: "palette",
+        iconClass: "text-white",
+        span: "sm:col-span-2 lg:col-span-3",
+      },
     ];
 
     const SOCIALS = [
       { name: "Instagram", handle: "@anewthingldn", href: LINKS.instagram, icon: "instagram", color: "hover:bg-coral", brand: "bg-[linear-gradient(45deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5)]" },
       { name: "YouTube", handle: "@ANewThingLondon", href: LINKS.youtube, icon: "youtube", color: "hover:bg-sun", brand: "bg-[#FF0000]" },
       { name: "TikTok", handle: "@anewthingldn", href: LINKS.tiktok, icon: "tiktok", color: "hover:bg-sky", brand: "bg-black [&_svg]:[filter:drop-shadow(-1.2px_-1.2px_0_#25F4EE)_drop-shadow(1.2px_1.2px_0_#FE2C55)]" },
+    ];
+
+    // The footer also links to our Spotify playlist.
+    const FOOTER_SOCIALS = [
+      ...SOCIALS,
+      { name: "Spotify", href: LINKS.spotify, icon: "spotify-mono", color: "hover:bg-[#1DB954]" },
     ];
 
     const isExternal = (href) => /^https?:\/\//.test(href);
@@ -172,6 +202,30 @@
     function Icon({ name, className = "w-6 h-6" }) {
       const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round" };
       switch (name) {
+        case "spotify":
+          return (
+            <svg viewBox="0 0 24 24" className={className}>
+              <circle cx="12" cy="12" r="10.5" fill="currentColor" />
+              <path d="M6.8 9.4c3.6-1.1 7.6-.8 10.6 1M7.4 12.6c3-.9 6.3-.6 8.8 1M8 15.7c2.4-.7 4.9-.5 6.9.7" fill="none" stroke="#1DB954" strokeWidth="1.9" strokeLinecap="round" />
+            </svg>
+          );
+        case "spotify-mono":
+          return (
+            <svg viewBox="0 0 24 24" className={className} {...stroke}>
+              <circle cx="12" cy="12" r="9.5" />
+              <path d="M7.3 9.6c3.3-1 7-.7 9.7.9M7.8 12.7c2.8-.8 5.8-.5 8.1.9M8.4 15.6c2.2-.6 4.4-.4 6.2.6" strokeWidth="1.9" />
+            </svg>
+          );
+        case "palette":
+          return (
+            <svg viewBox="0 0 24 24" className={className} {...stroke}>
+              <path d="M12 3a9 9 0 0 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4.1-4-7.2-9-7.2z" />
+              <circle cx="7.5" cy="11" r="1.3" fill="currentColor" stroke="none" />
+              <circle cx="10" cy="7.3" r="1.3" fill="currentColor" stroke="none" />
+              <circle cx="14.5" cy="7.3" r="1.3" fill="currentColor" stroke="none" />
+              <circle cx="17" cy="11" r="1.3" fill="currentColor" stroke="none" />
+            </svg>
+          );
         case "cross":
           return <svg viewBox="0 0 24 24" className={className} {...stroke} strokeWidth="2.6"><path d="M12 2.5v19M6 8h12" /></svg>;
         case "spark":
@@ -389,7 +443,7 @@
         ? `hover:-translate-y-1.5 hover:-translate-x-0.5 hover:shadow-pop-lg active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-brand/50 ${r.tint}`
         : "";
       return (
-        <Reveal delay={(index % 3) * 90} className={r.featured ? "sm:col-span-2 lg:col-span-1" : ""}>
+        <Reveal delay={(index % 3) * 90} className={r.span || ""}>
           <Tag
             {...(isLink ? linkProps(r.href) : {})}
             className={`group relative flex h-full flex-col rounded-[1.75rem] border-2 border-ink bg-white p-6 shadow-pop transition-all duration-300 ${interactive}`}
@@ -572,6 +626,7 @@
             { label: "YouTube", href: LINKS.youtube },
             { label: "Instagram", href: LINKS.instagram },
             { label: "TikTok", href: LINKS.tiktok },
+            { label: "Spotify playlist", href: LINKS.spotify },
           ],
         },
         {
@@ -596,7 +651,7 @@
                   A church family in London helping people know Jesus, grow in faith and find a place to belong.
                 </p>
                 <div className="mt-6 flex gap-3">
-                  {SOCIALS.map((s) => (
+                  {FOOTER_SOCIALS.map((s) => (
                     <a
                       key={s.name}
                       {...linkProps(s.href)}
