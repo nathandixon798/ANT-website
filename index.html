@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A New Thing London · Start Here</title>
+  <meta name="description" content="New to faith? Start here. Free guides, next steps and ways to connect with A New Thing London church." />
+  <meta name="theme-color" content="#AD43CB" />
+  <meta property="og:title" content="A New Thing London · Start Here" />
+  <meta property="og:description" content="New to faith? Free guides, next steps and ways to connect with A New Thing London." />
+  <meta property="og:image" content="assets/logo.png" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { DEFAULT: "#AD43CB", dark: "#8A2BA8", light: "#F3E3F9" },
+            sun: "#FFC83D",
+            coral: "#FF6B5B",
+            mint: "#22C9A0",
+            sky: "#3DB7F0",
+            ink: "#1D1530",
+            cream: "#FFF8F1",
+          },
+          fontFamily: {
+            display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
+            sans: ['"DM Sans"', "system-ui", "sans-serif"],
+          },
+          boxShadow: {
+            pop: "5px 5px 0 0 #1D1530",
+            "pop-lg": "8px 8px 0 0 #1D1530",
+          },
+          keyframes: {
+            float: { "0%,100%": { transform: "translateY(0) rotate(var(--r,0deg))" }, "50%": { transform: "translateY(-12px) rotate(var(--r,0deg))" } },
+            wiggle: { "0%,100%": { transform: "rotate(-3deg)" }, "50%": { transform: "rotate(3deg)" } },
+            blob: { "0%,100%": { borderRadius: "42% 58% 70% 30% / 45% 45% 55% 55%" }, "50%": { borderRadius: "70% 30% 46% 54% / 30% 39% 61% 70%" } },
+          },
+          animation: {
+            float: "float 6s ease-in-out infinite",
+            "float-slow": "float 8s ease-in-out infinite",
+            wiggle: "wiggle 2.4s ease-in-out infinite",
+            blob: "blob 12s ease-in-out infinite",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background: #FFF8F1; color: #1D1530; -webkit-tap-highlight-color: transparent; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .dot-grid { background-image: radial-gradient(#1D153014 1.5px, transparent 1.5px); background-size: 22px 22px; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      [class*="animate-"] { animation: none !important; }
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+</head>
+<body class="font-sans antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useEffect, useRef, useState } = React;
+
+    /* ------------------------------------------------------------------
+       EDIT YOUR LINKS HERE
+       Every button on the page reads from this one object.
+       Drop PDFs into the /resources folder next to index.html, or paste
+       any full URL (Google Drive, Canva, etc).
+       Leave a link as "" and its button shows "Coming soon" instead.
+    ------------------------------------------------------------------- */
+    const LINKS = {
+      newToFaithGuide: "",
+      directions: "https://www.google.com/maps/search/?api=1&query=Lumiere+London+6-14+Underwood+St+London+N1+7JQ",
+      readTheBible: "https://www.bible.com/en-GB/reading-plans/52093-new-to-jesus",
+      prayerRequest: "https://forms.gle/7i9zAgLYhp4NKENv9",
+      askAQuestion: "https://forms.gle/gcEi6t2ZyUc2ot4z7",
+      messages: "https://www.youtube.com/@ANewThingLondon/videos",
+      youtube: "https://www.youtube.com/@ANewThingLondon",
+      instagram: "https://www.instagram.com/anewthingldn",
+      tiktok: "https://www.tiktok.com/@anewthingldn",
+    };
+
+    const RESOURCES = [
+      {
+        title: "New to Faith Guide",
+        blurb: "A short, friendly guide to your first steps with Jesus — what just happened, and what comes next.",
+        href: LINKS.newToFaithGuide,
+        color: "bg-brand",
+        tint: "group-hover:bg-brand-light",
+        icon: "spark",
+        featured: true,
+      },
+      {
+        title: "Join Us on Sunday",
+        blurb: "Come as you are — we'll save you a seat.",
+        tag: "Every Sunday",
+        details: [
+          { emoji: "📍", text: "Lumiere London, 6-14 Underwood St, Old Street, N1 7JQ" },
+          { emoji: "🕥", text: "Doors open 11:45am · Service starts 12pm" },
+        ],
+        directions: LINKS.directions,
+        color: "bg-coral",
+        tint: "",
+        icon: "pin",
+      },
+      {
+        title: "Start Reading the Bible",
+        blurb: "New to Jesus? A short 5-day plan exploring who Jesus is, why He came, and what it means to follow Him.",
+        tag: "5-day plan",
+        href: LINKS.readTheBible,
+        color: "bg-sky",
+        tint: "group-hover:bg-[#E1F4FD]",
+        icon: "book",
+      },
+      {
+        title: "Watch a Message",
+        blurb: "Catch up on recent sermons and stories from our church family on YouTube.",
+        tag: "Video",
+        href: LINKS.messages,
+        color: "bg-sun",
+        tint: "group-hover:bg-[#FFF3D1]",
+        icon: "play",
+      },
+      {
+        title: "Send a Prayer Request",
+        blurb: "Whatever you're carrying, you don't have to carry it alone. Tell us — we'd love to pray for you.",
+        href: LINKS.prayerRequest,
+        color: "bg-mint",
+        tint: "group-hover:bg-[#DDF7EF]",
+        icon: "heart",
+      },
+      {
+        title: "Ask Us Anything",
+        blurb: "Questions about faith, church or life? No question is too big or too small. Just ask.",
+        tag: "Chat with us",
+        href: LINKS.askAQuestion,
+        color: "bg-ink",
+        tint: "group-hover:bg-[#ECE9F3]",
+        icon: "chat",
+      },
+    ];
+
+    const SOCIALS = [
+      { name: "Instagram", handle: "@anewthingldn", href: LINKS.instagram, icon: "instagram", color: "hover:bg-coral" },
+      { name: "YouTube", handle: "@ANewThingLondon", href: LINKS.youtube, icon: "youtube", color: "hover:bg-sun" },
+      { name: "TikTok", handle: "@anewthingldn", href: LINKS.tiktok, icon: "tiktok", color: "hover:bg-sky" },
+    ];
+
+    const isExternal = (href) => /^https?:\/\//.test(href);
+    const linkProps = (href) => (isExternal(href) ? { href, target: "_blank", rel: "noopener noreferrer" } : { href });
+
+    /* ---------------------------- Icons ---------------------------- */
+    function Icon({ name, className = "w-6 h-6" }) {
+      const stroke = { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round", strokeLinejoin: "round" };
+      switch (name) {
+        case "spark":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" /></svg>;
+        case "pin":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>;
+        case "book":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" /><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" /><path d="M12 7v6M9 10h6" /></svg>;
+        case "play":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><rect x="2.5" y="5" width="19" height="14" rx="4" /><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" /></svg>;
+        case "heart":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M12 20s-7.5-4.6-9-9.6C2 6.9 4.3 4 7.4 4c2 0 3.6 1.1 4.6 2.7C13 5.1 14.6 4 16.6 4 19.7 4 22 6.9 21 10.4 19.5 15.4 12 20 12 20z" /></svg>;
+        case "chat":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z" /><path d="M8.5 12h.01M12 12h.01M15.5 12h.01" strokeWidth="3" /></svg>;
+        case "arrow":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+        case "down":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M12 5v14M6 13l6 6 6-6" /></svg>;
+        case "share":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" /></svg>;
+        case "check":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>;
+        case "instagram":
+          return <svg viewBox="0 0 24 24" className={className} {...stroke}><rect x="3" y="3" width="18" height="18" rx="5.5" /><circle cx="12" cy="12" r="4" /><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" /></svg>;
+        case "youtube":
+          return <svg viewBox="0 0 24 24" className={className} fill="currentColor"><path d="M22.5 7.2a3 3 0 0 0-2.1-2.1C18.5 4.6 12 4.6 12 4.6s-6.5 0-8.4.5A3 3 0 0 0 1.5 7.2 31 31 0 0 0 1 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.4.5 8.4.5s6.5 0 8.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 23 12a31 31 0 0 0-.5-4.8zM9.8 15.1V8.9L15.2 12z" /></svg>;
+        case "tiktok":
+          return <svg viewBox="0 0 24 24" className={className} fill="currentColor"><path d="M16.6 2h-3.3v13.4a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.2a6.3 6.3 0 1 0 5.3 6.2V8.6a7.9 7.9 0 0 0 4.6 1.5V6.8a4.6 4.6 0 0 1-4.6-4.6z" /></svg>;
+        default:
+          return null;
+      }
+    }
+
+    /* --------------------- Scroll reveal helper --------------------- */
+    function Reveal({ as: Tag = "div", delay = 0, className = "", children, ...rest }) {
+      const ref = useRef(null);
+      const [visible, setVisible] = useState(false);
+      useEffect(() => {
+        const el = ref.current;
+        if (!el || !("IntersectionObserver" in window)) return setVisible(true);
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setVisible(true);
+              io.disconnect();
+            }
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        );
+        io.observe(el);
+        return () => io.disconnect();
+      }, []);
+      return (
+        <Tag ref={ref} style={{ transitionDelay: `${delay}ms` }} className={`reveal ${visible ? "is-visible" : ""} ${className}`} {...rest}>
+          {children}
+        </Tag>
+      );
+    }
+
+    /* ---------------------------- Buttons --------------------------- */
+    function PrimaryButton({ href, children, className = "" }) {
+      return (
+        <a
+          {...linkProps(href)}
+          className={`group inline-flex items-center justify-center gap-3 rounded-full bg-ink text-white font-display font-bold text-lg pl-7 pr-2 py-2 border-2 border-ink shadow-pop transition-all duration-200 hover:-translate-y-0.5 hover:-translate-x-0.5 hover:shadow-pop-lg active:translate-x-1 active:translate-y-1 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-sun ${className}`}
+        >
+          {children}
+          <span className="grid place-items-center w-11 h-11 rounded-full bg-sun text-ink transition-transform duration-300 group-hover:rotate-[-45deg]">
+            <Icon name="arrow" className="w-5 h-5" />
+          </span>
+        </a>
+      );
+    }
+
+    function Logo({ className = "w-10 h-10" }) {
+      return <img src="assets/logo.png" alt="A New Thing London logo" className={`${className} rounded-full`} width="80" height="80" />;
+    }
+
+    /* ----------------------------- Header ---------------------------- */
+    function Header() {
+      return (
+        <header className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 pt-5">
+          <nav className="flex items-center justify-between rounded-full bg-white/80 backdrop-blur border-2 border-ink px-3 py-2 shadow-pop">
+            <a href="#top" className="flex items-center gap-2.5 pl-1 group">
+              <Logo className="w-9 h-9 transition-transform duration-500 group-hover:rotate-[360deg]" />
+              <span className="font-display font-extrabold tracking-tight text-[15px] sm:text-base leading-none">
+                A New Thing <span className="text-brand">London</span>
+              </span>
+            </a>
+            <div className="flex items-center gap-1.5">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.name}
+                  {...linkProps(s.href)}
+                  aria-label={`${s.name} ${s.handle}`}
+                  className={`grid place-items-center w-9 h-9 rounded-full border-2 border-transparent transition-all duration-200 hover:border-ink hover:-translate-y-0.5 ${s.color} hover:text-ink`}
+                >
+                  <Icon name={s.icon} className="w-[18px] h-[18px]" />
+                </a>
+              ))}
+            </div>
+          </nav>
+        </header>
+      );
+    }
+
+    /* ------------------------------ Hero ----------------------------- */
+    function PhoneMockup() {
+      const mini = [
+        { label: "New to Faith Guide", c: "bg-brand text-white" },
+        { label: "Find us on Sunday", c: "bg-coral text-white" },
+        { label: "Read the Bible", c: "bg-sky text-ink" },
+        { label: "Watch a Message", c: "bg-sun text-ink" },
+        { label: "Prayer Request", c: "bg-mint text-ink" },
+      ];
+      return (
+        <div className="relative mx-auto w-[270px] sm:w-[300px]">
+          {/* blobs */}
+          <div aria-hidden className="absolute -inset-10 sm:-inset-14 bg-brand/25 animate-blob" />
+          <div aria-hidden className="absolute -right-8 -top-6 w-28 h-28 bg-sun rounded-full border-2 border-ink animate-float-slow" />
+          <div aria-hidden className="absolute -left-10 bottom-10 w-20 h-20 bg-mint rounded-[1.6rem] border-2 border-ink animate-float" style={{ "--r": "18deg" }} />
+
+          {/* phone */}
+          <div className="relative rounded-[2.8rem] bg-ink p-2.5 shadow-pop-lg rotate-[3deg] transition-transform duration-500 hover:rotate-0">
+            <div className="rounded-[2.3rem] bg-cream overflow-hidden">
+              <div className="flex justify-center pt-3">
+                <div className="h-5 w-24 rounded-full bg-ink" />
+              </div>
+              <div className="px-5 pt-5 pb-7 text-center">
+                <Logo className="w-16 h-16 mx-auto border-2 border-ink" />
+                <p className="mt-3 font-display font-extrabold text-lg leading-tight">A New Thing London</p>
+                <p className="text-xs text-ink/60 mt-1">New to faith? Start here 🙏</p>
+                <div className="mt-5 space-y-2.5">
+                  {mini.map((m, i) => (
+                    <div
+                      key={m.label}
+                      className={`${m.c} rounded-2xl border-2 border-ink py-2.5 text-sm font-bold shadow-[3px_3px_0_0_#1D1530]`}
+                      style={{ animation: `float 5s ease-in-out ${i * 0.35}s infinite` }}
+                    >
+                      {m.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* stickers */}
+          <div className="absolute -left-12 sm:-left-20 top-16 rotate-[-8deg] rounded-2xl bg-white border-2 border-ink px-3.5 py-2 shadow-pop font-display font-bold text-sm animate-wiggle">
+            👋 So glad we met!
+          </div>
+          <div className="absolute -right-4 sm:-right-14 -bottom-5 sm:bottom-24 rotate-[6deg] rounded-2xl bg-coral text-white border-2 border-ink px-3.5 py-2 shadow-pop font-display font-bold text-sm">
+            ❤️ You're welcome here
+          </div>
+        </div>
+      );
+    }
+
+    function Hero() {
+      return (
+        <section id="top" className="relative overflow-hidden">
+          <div aria-hidden className="absolute inset-0 dot-grid [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+          <div className="relative mx-auto max-w-6xl px-4 sm:px-6 pt-12 pb-20 sm:pt-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-[1.1fr_0.9fr] gap-16 lg:gap-10 items-center">
+            <div className="text-center lg:text-left">
+              <Reveal>
+                <span className="inline-flex items-center gap-2 rounded-full bg-brand-light text-brand-dark border-2 border-brand/30 px-4 py-1.5 text-sm font-bold">
+                  <span className="relative flex w-2.5 h-2.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-brand opacity-60 animate-ping" />
+                    <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-brand" />
+                  </span>
+                  Got our card? You're in the right place
+                </span>
+              </Reveal>
+
+              <Reveal delay={80} as="h1" className="mt-6 font-display font-extrabold tracking-tight text-[2.75rem] leading-[1.02] sm:text-6xl lg:text-7xl">
+                New to faith?{" "}
+                <span className="relative inline-block">
+                  <span className="relative z-10">Start</span>
+                  <svg aria-hidden viewBox="0 0 200 20" preserveAspectRatio="none" className="absolute left-0 -bottom-1 w-full h-4 text-sun z-0">
+                    <path d="M3 14 C 50 4, 120 4, 197 12" fill="none" stroke="currentColor" strokeWidth="9" strokeLinecap="round" />
+                  </svg>
+                </span>{" "}
+                <span className="text-brand">right here.</span>
+              </Reveal>
+
+              <Reveal delay={160} as="p" className="mt-6 text-lg sm:text-xl text-ink/70 max-w-xl mx-auto lg:mx-0">
+                Free guides, next steps and real people ready to walk with you.
+              </Reveal>
+
+              <Reveal delay={240} className="mt-9 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                <PrimaryButton href={MAIN_CTA.href}>{MAIN_CTA.label}</PrimaryButton>
+                <a
+                  href="#start"
+                  className="group inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold text-ink/80 hover:text-ink hover:bg-white border-2 border-transparent hover:border-ink transition-all"
+                >
+                  See all resources
+                  <Icon name="down" className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                </a>
+              </Reveal>
+            </div>
+
+            <Reveal delay={200} className="pb-6 lg:pb-0">
+              <PhoneMockup />
+            </Reveal>
+          </div>
+        </section>
+      );
+    }
+
+    /* --------------------------- Resources --------------------------- */
+    function ResourceCard({ r, index }) {
+      const isLink = Boolean(r.href);
+      const Tag = isLink ? "a" : "div";
+      const interactive = isLink
+        ? `hover:-translate-y-1.5 hover:-translate-x-0.5 hover:shadow-pop-lg active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-4 focus-visible:ring-brand/50 ${r.tint}`
+        : "";
+      return (
+        <Reveal delay={(index % 3) * 90} className={r.featured ? "sm:col-span-2 lg:col-span-1" : ""}>
+          <Tag
+            {...(isLink ? linkProps(r.href) : {})}
+            className={`group relative flex h-full flex-col rounded-[1.75rem] border-2 border-ink bg-white p-6 shadow-pop transition-all duration-300 ${interactive}`}
+          >
+            <div className="flex items-start justify-between">
+              <span className={`grid place-items-center w-14 h-14 rounded-2xl border-2 border-ink ${r.color} ${r.color === "bg-sun" || r.color === "bg-mint" || r.color === "bg-sky" ? "text-ink" : "text-white"} transition-transform duration-300 group-hover:rotate-[-8deg] group-hover:scale-110`}>
+                <Icon name={r.icon} className="w-7 h-7" />
+              </span>
+              {r.tag && (
+                <span className="rounded-full border-2 border-ink/15 bg-cream px-3 py-1 text-xs font-bold uppercase tracking-wider text-ink/70">
+                  {r.tag}
+                </span>
+              )}
+            </div>
+            <h3 className="mt-6 font-display text-2xl font-extrabold tracking-tight">{r.title}</h3>
+
+            {r.details ? (
+              <>
+                <ul className="mt-3 space-y-2.5 flex-1">
+                  {r.details.map((d) => (
+                    <li key={d.text} className="flex gap-2.5 rounded-2xl bg-cream px-3.5 py-2.5 font-medium leading-snug">
+                      <span aria-hidden>{d.emoji}</span>
+                      <span>{d.text}</span>
+                    </li>
+                  ))}
+                  <li className="text-ink/65 pt-1">{r.blurb}</li>
+                </ul>
+                <a
+                  {...linkProps(r.directions)}
+                  className="group/dir mt-6 self-start inline-flex items-center gap-2 rounded-full border-2 border-ink bg-coral text-white pl-4 pr-1.5 py-1.5 font-bold transition-all duration-200 hover:-translate-y-0.5 hover:shadow-pop active:translate-y-0.5 active:shadow-none"
+                >
+                  Get directions
+                  <span className="grid place-items-center w-8 h-8 rounded-full bg-white text-ink transition-transform duration-300 group-hover/dir:translate-x-1">
+                    <Icon name="arrow" className="w-4 h-4" />
+                  </span>
+                </a>
+              </>
+            ) : (
+              <>
+                <p className="mt-2 text-ink/65 leading-relaxed flex-1">{r.blurb}</p>
+                {isLink ? (
+                  <span className="mt-6 inline-flex items-center gap-2 font-bold">
+                    Open
+                    <span className="grid place-items-center w-8 h-8 rounded-full bg-ink text-white transition-all duration-300 group-hover:translate-x-1.5 group-hover:bg-brand">
+                      <Icon name="arrow" className="w-4 h-4" />
+                    </span>
+                  </span>
+                ) : (
+                  <span className="mt-6 self-start rounded-full border-2 border-dashed border-ink/30 px-4 py-1.5 text-sm font-bold text-ink/60">
+                    Coming soon
+                  </span>
+                )}
+              </>
+            )}
+
+            {r.featured && (
+              <span className="absolute -top-3.5 right-6 rotate-[4deg] rounded-full bg-sun border-2 border-ink px-3 py-1 text-xs font-extrabold uppercase tracking-wide">
+                Start here ✨
+              </span>
+            )}
+          </Tag>
+        </Reveal>
+      );
+    }
+
+    // Main call-to-action: the guide once it has a link, otherwise the resource list.
+    const MAIN_CTA = LINKS.newToFaithGuide
+      ? { href: LINKS.newToFaithGuide, label: "Get the free guide" }
+      : { href: "#start", label: "Take your next step" };
+
+    function Resources() {
+      return (
+        <section id="start" className="relative mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-24 scroll-mt-6">
+          <Reveal className="text-center max-w-2xl mx-auto">
+            <p className="font-display font-bold text-brand uppercase tracking-[0.18em] text-sm">Your next steps</p>
+            <h2 className="mt-3 font-display font-extrabold tracking-tight text-4xl sm:text-5xl">Everything you need, in one place.</h2>
+            <p className="mt-4 text-lg text-ink/65">Tap any card. It's all free, and you can go at your own pace.</p>
+          </Reveal>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {RESOURCES.map((r, i) => (
+              <ResourceCard key={r.title} r={r} index={i} />
+            ))}
+          </div>
+
+          <Reveal className="mt-14">
+            <div className="rounded-[2rem] border-2 border-ink bg-white p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 justify-between shadow-pop">
+              <div className="text-center md:text-left">
+                <h3 className="font-display text-2xl font-extrabold">Follow along online</h3>
+                <p className="text-ink/65 mt-1">Daily encouragement, stories and what's on this week.</p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                {SOCIALS.map((s) => (
+                  <a
+                    key={s.name}
+                    {...linkProps(s.href)}
+                    className={`group inline-flex items-center gap-2.5 rounded-full border-2 border-ink bg-cream pl-2 pr-4 py-2 font-bold transition-all duration-200 hover:-translate-y-1 hover:shadow-pop ${s.color}`}
+                  >
+                    <span className="grid place-items-center w-9 h-9 rounded-full bg-ink text-white transition-transform group-hover:rotate-12">
+                      <Icon name={s.icon} className="w-[18px] h-[18px]" />
+                    </span>
+                    {s.handle}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      );
+    }
+
+    /* --------------------------- Bottom CTA -------------------------- */
+    function ShareButton() {
+      const [copied, setCopied] = useState(false);
+      const share = async () => {
+        const data = { title: "A New Thing London", text: "New to faith? Start here.", url: window.location.href };
+        try {
+          if (navigator.share) return await navigator.share(data);
+          await navigator.clipboard.writeText(data.url);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2200);
+        } catch (_) {}
+      };
+      return (
+        <button
+          type="button"
+          onClick={share}
+          className="inline-flex items-center gap-2 rounded-full border-2 border-white/70 px-6 py-3.5 font-bold text-white transition-all hover:bg-white hover:text-ink hover:border-white active:scale-95"
+        >
+          <Icon name={copied ? "check" : "share"} className="w-5 h-5" />
+          {copied ? "Link copied!" : "Share with a friend"}
+        </button>
+      );
+    }
+
+    function BottomCTA() {
+      return (
+        <section className="px-4 sm:px-6 pb-16 sm:pb-24">
+          <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] border-2 border-ink bg-brand shadow-pop-lg">
+            <div aria-hidden className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-sun/90 border-2 border-ink animate-float-slow" />
+            <div aria-hidden className="absolute -bottom-20 -right-10 w-72 h-72 bg-coral border-2 border-ink animate-blob" />
+            <div aria-hidden className="absolute top-10 right-[22%] w-10 h-10 rounded-xl bg-mint border-2 border-ink animate-float" style={{ "--r": "20deg" }} />
+            <div aria-hidden className="absolute bottom-12 left-[18%] w-6 h-6 rounded-full bg-sky border-2 border-ink animate-float-slow" />
+
+            <div className="relative px-6 py-16 sm:px-12 sm:py-24 text-center">
+              <p className="inline-block rounded-full bg-white/15 text-white border-2 border-white/30 px-4 py-1.5 text-sm font-bold backdrop-blur">
+                No pressure. No catch. Just next steps.
+              </p>
+              <h2 className="mt-6 font-display font-extrabold tracking-tight text-white text-4xl sm:text-6xl leading-[1.05] max-w-3xl mx-auto">
+                Your new beginning with Jesus starts today.
+              </h2>
+              <p className="mt-5 text-white/85 text-lg max-w-xl mx-auto">
+                Jesus knows you, loves you and has made a way home. Come along on Sunday, start the Bible plan, or just say hello. We'd love to walk this road with you.
+              </p>
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <PrimaryButton href={MAIN_CTA.href} className="!bg-white !text-ink">{MAIN_CTA.label}</PrimaryButton>
+                <ShareButton />
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      );
+    }
+
+    /* ----------------------------- Footer ---------------------------- */
+    function Footer() {
+      const columns = [
+        {
+          heading: "Get started",
+          links: [
+            { label: "New to Faith Guide", href: LINKS.newToFaithGuide },
+            { label: "New to Jesus Bible plan", href: LINKS.readTheBible },
+            { label: "Directions to church", href: LINKS.directions },
+            { label: "Watch a message", href: LINKS.messages },
+          ],
+        },
+        {
+          heading: "Watch & follow",
+          links: [
+            { label: "YouTube", href: LINKS.youtube },
+            { label: "Instagram", href: LINKS.instagram },
+            { label: "TikTok", href: LINKS.tiktok },
+          ],
+        },
+        {
+          heading: "Connect",
+          links: [
+            { label: "Prayer request", href: LINKS.prayerRequest },
+            { label: "Ask us anything", href: LINKS.askAQuestion },
+            { label: "Back to top", href: "#top" },
+          ],
+        },
+      ];
+      return (
+        <footer className="bg-ink text-white rounded-t-[2.5rem]">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-10">
+            <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
+              <div>
+                <a href="#top" className="inline-flex items-center gap-3 group">
+                  <Logo className="w-12 h-12 transition-transform duration-500 group-hover:rotate-[360deg]" />
+                  <span className="font-display font-extrabold text-xl">A New Thing London</span>
+                </a>
+                <p className="mt-4 text-white/60 max-w-xs leading-relaxed">
+                  A church family in London helping people know Jesus, grow in faith and find a place to belong.
+                </p>
+                <div className="mt-6 flex gap-3">
+                  {SOCIALS.map((s) => (
+                    <a
+                      key={s.name}
+                      {...linkProps(s.href)}
+                      aria-label={s.name}
+                      className={`grid place-items-center w-11 h-11 rounded-full bg-white/10 transition-all duration-200 hover:-translate-y-1 hover:text-ink ${s.color}`}
+                    >
+                      <Icon name={s.icon} className="w-5 h-5" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+                {columns.map((col) => (
+                  <div key={col.heading}>
+                    <h4 className="font-display font-bold text-sun text-sm uppercase tracking-[0.16em]">{col.heading}</h4>
+                    <ul className="mt-4 space-y-3">
+                      {col.links.map((l) => (
+                        <li key={l.label}>
+                          {!l.href ? (
+                            <span className="text-white/40">{l.label} <span className="text-xs">(soon)</span></span>
+                          ) : (
+                            <a {...linkProps(l.href)} className="text-white/70 hover:text-white inline-flex items-center gap-1 group transition-colors">
+                              {l.label}
+                              <Icon name="arrow" className="w-3.5 h-3.5 opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
+                            </a>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 items-center justify-between text-sm text-white/50">
+              <p>© {new Date().getFullYear()} A New Thing London. All rights reserved.</p>
+              <p>Made with ❤️ for everyone taking their first step.</p>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    function App() {
+      return (
+        <>
+          <Header />
+          <main>
+            <Hero />
+            <Resources />
+            <BottomCTA />
+          </main>
+          <Footer />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
